@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificat — LMS Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+<header class="bg-white border-b border-slate-100">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center">
+    <a href="index.html" class="flex items-center gap-2 font-bold text-xl text-blue-600">
+      <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-green-500 flex items-center justify-center text-white text-sm">LP</span>
+      LMS Platform
+    </a>
+  </nav>
+</header>
+
+<main class="flex-1 max-w-3xl mx-auto px-4 py-16 text-center">
+  <div id="certificate-content">
+    <p class="text-slate-400">Chargement du certificat...</p>
+  </div>
+</main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<script>
+async function loadCertificate() {
+  const code = new URLSearchParams(window.location.search).get('code');
+  const container = document.getElementById('certificate-content');
+  if (!code) {
+    container.innerHTML = '<p class="text-red-500">Aucun code de certificat fourni.</p>';
+    return;
+  }
+  try {
+    const cert = await apiFetch(`/certificates/${code}`, { auth: false });
+    container.innerHTML = `
+      <div class="bg-white rounded-2xl border-4 border-blue-600 p-10 shadow-xl">
+        <p class="text-sm font-semibold text-green-600 uppercase tracking-wide">Certificat de réussite</p>
+        <h1 class="text-3xl font-bold text-slate-900 mt-4">${cert.user.name}</h1>
+        <p class="text-slate-500 mt-3">a terminé avec succès la formation</p>
+        <h2 class="text-2xl font-bold text-blue-600 mt-2">${cert.course.title}</h2>
+        <p class="text-sm text-slate-400 mt-6">Délivré le ${new Date(cert.issuedAt).toLocaleDateString('fr-FR')} · Code : ${cert.certificateCode}</p>
+        <a href="${CONFIG.API_BASE_URL}/certificates/${cert.certificateCode}/download" class="inline-block mt-6 bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition">Télécharger le PDF</a>
+      </div>
+    `;
+  } catch (err) {
+    container.innerHTML = `<p class="text-red-500">${err.message}</p>`;
+  }
+}
+loadCertificate();
+</script>
+</body>
+</html>

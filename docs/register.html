@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription — LMS Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center px-4 py-12">
+
+<div class="w-full max-w-md">
+  <div class="text-center mb-8">
+    <a href="index.html" class="inline-flex items-center gap-2 font-bold text-xl text-blue-600">
+      <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-green-500 flex items-center justify-center text-white text-sm">LP</span>
+      LMS Platform
+    </a>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-8">
+    <h1 class="text-2xl font-bold text-slate-900 mb-1">Créer un compte</h1>
+    <p class="text-sm text-slate-500 mb-6">Commencez à apprendre dès aujourd'hui, gratuitement.</p>
+
+    <form id="register-form" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Nom complet</label>
+        <input type="text" name="name" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Jean Dupont">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Adresse email</label>
+        <input type="email" name="email" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="vous@exemple.com">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Mot de passe</label>
+        <input type="password" name="password" required minlength="6" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="6 caractères minimum">
+      </div>
+
+      <p id="register-error" class="hidden text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
+
+      <button type="submit" id="register-submit" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-lg hover:bg-blue-700 transition">S'inscrire</button>
+    </form>
+
+    <p class="text-sm text-slate-500 text-center mt-6">
+      Déjà un compte ? <a href="login.html" class="text-blue-600 font-semibold hover:underline">Se connecter</a>
+    </p>
+  </div>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+</body>
+</html>
