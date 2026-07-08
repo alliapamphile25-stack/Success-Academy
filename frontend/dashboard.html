@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon espace — LMS Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<header class="bg-white/90 backdrop-blur sticky top-0 z-40 border-b border-slate-100">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2 font-bold text-xl text-blue-600">
+      <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-green-500 flex items-center justify-center text-white text-sm">LP</span>
+      LMS Platform
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+      <a href="dashboard.html" class="text-blue-600">Mon espace</a>
+      <a href="live.html">Sessions live</a>
+      <a href="index.html#formations">Catalogue</a>
+    </div>
+    <div id="nav-user" class="hidden md:flex items-center gap-4">
+      <a id="nav-admin" href="admin/index.html" class="hidden text-sm font-medium text-slate-600 hover:text-blue-600">Admin</a>
+      <div class="relative">
+        <span class="text-sm">🔔</span>
+        <span id="notif-badge" class="hidden absolute -top-2 -right-2 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">0</span>
+      </div>
+      <span class="text-sm text-slate-500">Bonjour, <span id="nav-user-name" class="font-semibold text-slate-800"></span></span>
+      <a href="#" id="nav-logout" class="text-sm font-semibold text-red-600 hover:text-red-700">Déconnexion</a>
+    </div>
+    <div id="nav-guest" class="hidden"></div>
+  </nav>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <h1 class="text-2xl font-bold text-slate-900">Mon tableau de bord</h1>
+  <p class="text-slate-500 mt-1">Retrouvez vos formations et votre progression.</p>
+
+  <!-- Stats rapides -->
+  <div class="grid sm:grid-cols-3 gap-4 mt-8">
+    <div class="bg-white rounded-xl border border-slate-100 p-5">
+      <p class="text-sm text-slate-500">Formations en cours</p>
+      <p id="stat-inprogress" class="text-3xl font-bold text-slate-900 mt-1">0</p>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-100 p-5">
+      <p class="text-sm text-slate-500">Formations terminées</p>
+      <p id="stat-completed" class="text-3xl font-bold text-green-600 mt-1">0</p>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-100 p-5">
+      <p class="text-sm text-slate-500">Certificats obtenus</p>
+      <p id="stat-certificates" class="text-3xl font-bold text-blue-600 mt-1">0</p>
+    </div>
+  </div>
+
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Mes formations</h2>
+  <div id="enrollments-list" class="space-y-4">
+    <p class="text-slate-400">Chargement...</p>
+  </div>
+
+  <div class="mt-10 bg-blue-50 border border-blue-100 rounded-xl p-6 flex items-center justify-between flex-wrap gap-4">
+    <div>
+      <h3 class="font-semibold text-slate-900">Envie d'apprendre autre chose ?</h3>
+      <p class="text-sm text-slate-500">Parcourez notre catalogue de formations.</p>
+    </div>
+    <a href="index.html#formations" class="bg-blue-600 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-700 transition text-sm">Voir le catalogue</a>
+  </div>
+</main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/dashboard.js"></script>
+</body>
+</html>

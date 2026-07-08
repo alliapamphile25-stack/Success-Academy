@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des formations — Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<div class="flex min-h-screen">
+  <aside class="w-64 bg-slate-900 text-slate-300 hidden lg:flex flex-col">
+    <div class="h-16 flex items-center px-6 font-bold text-white text-lg">
+      <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-green-500 flex items-center justify-center text-sm mr-2">LP</span>
+      Admin
+    </div>
+    <nav class="flex-1 px-3 space-y-1 text-sm">
+      <a href="index.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white">📊 Tableau de bord</a>
+      <a href="courses.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-800 text-white font-medium">📚 Formations</a>
+    </nav>
+    <div class="p-3 border-t border-slate-800">
+      <a href="../dashboard.html" class="block px-3 py-2 text-sm hover:text-white">← Retour au site</a>
+      <a href="#" id="nav-logout" class="block px-3 py-2 text-sm text-red-400 hover:text-red-300">Déconnexion</a>
+    </div>
+  </aside>
+
+  <main class="flex-1 p-6 lg:p-10">
+    <div class="flex items-center justify-between flex-wrap gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-slate-900">Gestion des formations</h1>
+        <p class="text-slate-500 mt-1">Ajoutez des formations, modules, vidéos et sessions live.</p>
+      </div>
+      <button id="btn-new-course" class="bg-blue-600 text-white font-semibold px-4 py-2.5 rounded-lg hover:bg-blue-700 transition text-sm">+ Nouvelle formation</button>
+    </div>
+
+    <div id="courses-admin-list" class="mt-8 space-y-4"></div>
+  </main>
+</div>
+
+<!-- Modale : créer une formation -->
+<div id="modal-course" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
+    <h2 class="font-bold text-lg text-slate-900 mb-4">Nouvelle formation</h2>
+    <form id="course-form" class="space-y-3">
+      <input name="title" required placeholder="Titre de la formation" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <textarea name="description" required placeholder="Description complète" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"></textarea>
+      <input name="shortDescription" placeholder="Description courte (catalogue)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <input name="thumbnail" placeholder="URL de l'image miniature" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <div class="grid grid-cols-2 gap-3">
+        <input name="category" placeholder="Catégorie" class="border border-slate-300 rounded-lg px-3 py-2 text-sm">
+        <select name="level" class="border border-slate-300 rounded-lg px-3 py-2 text-sm">
+          <option value="débutant">Débutant</option>
+          <option value="intermédiaire">Intermédiaire</option>
+          <option value="avancé">Avancé</option>
+        </select>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <input name="price" type="number" min="0" step="0.01" placeholder="Prix (0 = gratuit)" class="border border-slate-300 rounded-lg px-3 py-2 text-sm">
+        <label class="flex items-center gap-2 text-sm text-slate-600"><input type="checkbox" name="isPublished"> Publier immédiatement</label>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button type="button" id="btn-cancel-course" class="flex-1 border border-slate-300 rounded-lg py-2.5 text-sm font-semibold">Annuler</button>
+        <button class="flex-1 bg-blue-600 text-white rounded-lg py-2.5 text-sm font-semibold hover:bg-blue-700">Créer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modale : ajouter un module -->
+<div id="modal-module" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-xl max-w-md w-full p-6">
+    <h2 class="font-bold text-lg text-slate-900 mb-4">Ajouter un module</h2>
+    <form id="module-form" class="space-y-3">
+      <input name="title" required placeholder="Titre du module" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <input name="order" type="number" placeholder="Ordre (1, 2, 3...)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <div class="flex gap-3 pt-2">
+        <button type="button" class="btn-cancel-modal flex-1 border border-slate-300 rounded-lg py-2.5 text-sm font-semibold">Annuler</button>
+        <button class="flex-1 bg-blue-600 text-white rounded-lg py-2.5 text-sm font-semibold hover:bg-blue-700">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modale : ajouter une leçon -->
+<div id="modal-lesson" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
+    <h2 class="font-bold text-lg text-slate-900 mb-4">Ajouter une leçon</h2>
+    <form id="lesson-form" class="space-y-3">
+      <input name="title" required placeholder="Titre de la leçon" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <select name="type" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+        <option value="video">Vidéo (URL embed YouTube/Vimeo)</option>
+        <option value="pdf">PDF</option>
+        <option value="quiz">Quiz</option>
+        <option value="text">Texte</option>
+      </select>
+      <input name="videoUrl" placeholder="URL vidéo embed (ex: https://www.youtube.com/embed/xxx)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <input name="pdfUrl" placeholder="URL du PDF" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <input name="duration" type="number" placeholder="Durée (secondes)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <input name="order" type="number" placeholder="Ordre" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <label class="flex items-center gap-2 text-sm text-slate-600"><input type="checkbox" name="isFreePreview"> Aperçu gratuit</label>
+      <div class="flex gap-3 pt-2">
+        <button type="button" class="btn-cancel-modal flex-1 border border-slate-300 rounded-lg py-2.5 text-sm font-semibold">Annuler</button>
+        <button class="flex-1 bg-blue-600 text-white rounded-lg py-2.5 text-sm font-semibold hover:bg-blue-700">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/admin-courses.js"></script>
+</body>
+</html>

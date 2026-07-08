@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connexion — LMS Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center px-4 py-12">
+
+<div class="w-full max-w-md">
+  <div class="text-center mb-8">
+    <a href="index.html" class="inline-flex items-center gap-2 font-bold text-xl text-blue-600">
+      <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-green-500 flex items-center justify-center text-white text-sm">LP</span>
+      LMS Platform
+    </a>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-8">
+    <h1 class="text-2xl font-bold text-slate-900 mb-1">Bon retour !</h1>
+    <p class="text-sm text-slate-500 mb-6">Connectez-vous pour accéder à vos formations.</p>
+
+    <form id="login-form" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Adresse email</label>
+        <input type="email" name="email" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="vous@exemple.com">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Mot de passe</label>
+        <input type="password" name="password" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="••••••••">
+      </div>
+
+      <p id="login-error" class="hidden text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
+
+      <button type="submit" id="login-submit" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-lg hover:bg-blue-700 transition">Se connecter</button>
+    </form>
+
+    <p class="text-sm text-slate-500 text-center mt-6">
+      Pas encore de compte ? <a href="register.html" class="text-blue-600 font-semibold hover:underline">S'inscrire</a>
+    </p>
+
+    <div class="mt-6 pt-6 border-t border-slate-100 text-xs text-slate-400 space-y-1">
+      <p class="font-semibold text-slate-500">Comptes de démonstration (après <code>npm run seed</code>) :</p>
+      <p>Admin : admin@lmsplatform.com / Admin123!</p>
+      <p>Étudiant : etudiant@lmsplatform.com / Etudiant123!</p>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+</body>
+</html>
