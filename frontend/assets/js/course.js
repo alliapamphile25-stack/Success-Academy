@@ -216,30 +216,44 @@ async function loadQuiz(lessonId) {
   }
 }
 
-function bindEnrollButton() {
-  const btn = document.getElementById('btn-enroll');
-  btn?.addEventListener('click', async () => {
-    if (!isLoggedIn()) {
-      window.location.href = 'login.html';
-      return;
-    }
+async function performEnroll(btn) {
+  if (btn) {
     btn.disabled = true;
     btn.textContent = 'Traitement...';
-    try {
-      if (state.course.price === 0) {
-        await apiFetch('/enrollments', { method: 'POST', body: { courseId } });
-        showToast('Inscription réussie !', 'success');
-        setTimeout(() => window.location.reload(), 1000);
-      } else {
-        const { url } = await apiFetch('/payments/checkout', { method: 'POST', body: { courseId } });
-        window.location.href = url;
-      }
-    } catch (err) {
-      showToast(err.message, 'error');
+  }
+  try {
+    if (state.course.price === 0) {
+      await apiFetch('/enrollments', { method: 'POST', body: { courseId } });
+      showToast('Inscription réussie !', 'success');
+      setTimeout(() => window.location.reload(), 1000);
+    } else {
+      const { url } = await apiFetch('/payments/checkout', { method: 'POST', body: { courseId } });
+      window.location.href = url;
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+    if (btn) {
       btn.disabled = false;
       btn.textContent = "S'inscrire à cette formation";
     }
+  }
+}
+
+function bindEnrollButton() {
+  const btn = document.getElementById('btn-enroll');
+  btn?.addEventListener('click', () => {
+    if (!isLoggedIn()) {
+      window.location.href = `register.html?course=${courseId}`;
+      return;
+    }
+    performEnroll(btn);
   });
+
+  // Arrivée depuis register.html/login.html après inscription à la formation :
+  // on déclenche l'inscription automatiquement, sans clic supplémentaire.
+  if (isLoggedIn() && urlParams.get('enroll') === '1' && !state.course.isEnrolled) {
+    performEnroll(btn);
+  }
 }
 
 async function loadComments(lessonId) {

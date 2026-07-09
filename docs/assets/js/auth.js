@@ -1,13 +1,30 @@
 // Gère la soumission des formulaires d'inscription et de connexion.
 
+// Si l'utilisateur arrivait depuis une page formation (ex: register.html?course=ID),
+// on le renvoie directement dessus pour finaliser l'inscription à cette formation.
 function redirectAfterLogin() {
   const user = getCurrentUser();
+  const courseId = new URLSearchParams(window.location.search).get('course');
+  if (courseId) {
+    window.location.href = `course.html?id=${courseId}&enroll=1`;
+    return;
+  }
   if (user && ['admin', 'instructor'].includes(user.role)) {
     window.location.href = 'admin/index.html';
   } else {
     window.location.href = 'dashboard.html';
   }
 }
+
+// Préserve le paramètre ?course=ID quand on bascule entre les liens inscription/connexion.
+function preserveCourseParamInLinks() {
+  const courseId = new URLSearchParams(window.location.search).get('course');
+  if (!courseId) return;
+  document.querySelectorAll('a[href="login.html"], a[href="register.html"]').forEach((link) => {
+    link.href = `${link.getAttribute('href')}?course=${courseId}`;
+  });
+}
+document.addEventListener('DOMContentLoaded', preserveCourseParamInLinks);
 
 document.getElementById('register-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
