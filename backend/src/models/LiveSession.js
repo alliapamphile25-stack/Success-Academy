@@ -6,7 +6,9 @@ const liveSessionSchema = new mongoose.Schema(
     instructor: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     title: { type: String, required: true },
     description: { type: String, default: '' },
-    youtubeVideoId: { type: String, required: true }, // ID de la vidéo/stream YouTube (non répertorié)
+    platform: { type: String, enum: ['youtube', 'zoom'], default: 'youtube' },
+    youtubeVideoId: { type: String, default: '' }, // ID de la vidéo/stream YouTube (non répertorié)
+    zoomJoinUrl: { type: String, default: '' }, // lien de la réunion Zoom
     scheduledAt: { type: Date, required: true },
     isLive: { type: Boolean, default: false },
     isEnded: { type: Boolean, default: false },

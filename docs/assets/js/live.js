@@ -23,7 +23,7 @@ async function loadLiveSessions() {
         <div class="flex items-center gap-2 mb-2">
           ${s.isLive ? '<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span><span class="text-xs font-bold text-red-600">EN DIRECT</span>' : '<span class="text-xs font-semibold text-slate-400">À VENIR</span>'}
         </div>
-        <h3 class="font-semibold text-slate-900">${s.title}</h3>
+        <h3 class="font-semibold text-slate-900">${s.title} <span class="text-xs font-normal text-slate-400">${s.platform === 'zoom' ? '(Zoom)' : '(YouTube)'}</span></h3>
         <p class="text-xs text-slate-500 mt-1">${s.course?.title || ''} · ${new Date(s.scheduledAt).toLocaleString('fr-FR')}</p>
         <a href="live.html?id=${s._id}" class="inline-block mt-3 text-sm font-semibold text-blue-600 hover:underline">Rejoindre →</a>
       </div>`
@@ -43,7 +43,20 @@ async function enterLiveRoom(liveId) {
     const { session, messages } = await apiFetch(`/live/${liveId}`);
     document.getElementById('live-title').textContent = session.title;
     document.getElementById('live-description').textContent = session.description || '';
-    document.getElementById('live-player').innerHTML = `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${session.youtubeVideoId}?autoplay=1" title="${session.title}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+
+    const playerEl = document.getElementById('live-player');
+    if (session.platform === 'zoom') {
+      // Zoom ne s'intègre pas dans une iframe (restriction de leur plateforme) :
+      // on affiche un bouton qui ouvre la réunion dans un nouvel onglet.
+      playerEl.innerHTML = `
+        <div class="w-full h-full flex flex-col items-center justify-center gap-4 text-center p-6">
+          <span class="text-4xl">🎥</span>
+          <p class="text-white font-semibold">Cette session se déroule sur Zoom</p>
+          <a href="${session.zoomJoinUrl}" target="_blank" rel="noopener" class="bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition">Rejoindre la réunion Zoom →</a>
+        </div>`;
+    } else {
+      playerEl.innerHTML = `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${session.youtubeVideoId}?autoplay=1" title="${session.title}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    }
 
     const chatBox = document.getElementById('chat-messages');
     chatBox.innerHTML = messages.map(renderChatMessage).join('');
