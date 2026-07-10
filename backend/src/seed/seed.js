@@ -8,6 +8,7 @@ const Module = require('../models/Module');
 const Lesson = require('../models/Lesson');
 const Quiz = require('../models/Quiz');
 const LiveSession = require('../models/LiveSession');
+const Testimonial = require('../models/Testimonial');
 
 // Script de seed : crée un compte admin, un formateur, deux formations de démo
 // (une gratuite, une payante) avec modules/leçons/quiz, et un live planifié.
@@ -23,6 +24,7 @@ async function seed() {
     Lesson.deleteMany({}),
     Quiz.deleteMany({}),
     LiveSession.deleteMany({}),
+    Testimonial.deleteMany({}),
   ]);
 
   console.log('Création du compte admin...');
@@ -154,6 +156,25 @@ async function seed() {
     youtubeVideoId: 'jfKfPfyJRdk',
     scheduledAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
   });
+
+  console.log('Création de témoignages de démonstration...');
+  await Testimonial.create([
+    {
+      name: 'Awa K.',
+      role: 'Développeuse web',
+      text: "Formation très claire, le formateur répond en direct pendant les lives. J'ai décroché mon premier poste de développeur grâce à cette plateforme.",
+    },
+    {
+      name: 'Marc T.',
+      role: 'Étudiant',
+      text: "Le suivi de progression et les quiz m'ont vraiment aidée à rester motivée jusqu'au bout de la formation.",
+    },
+    {
+      name: 'Fatou D.',
+      role: 'Apprenante',
+      text: 'Interface simple, contenu de qualité, et le certificat final est un vrai plus sur mon CV.',
+    },
+  ]);
 
   console.log('\nSeed terminé avec succès !');
   console.log('----------------------------------------');

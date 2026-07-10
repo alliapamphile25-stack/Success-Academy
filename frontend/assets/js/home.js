@@ -30,4 +30,31 @@ async function loadCourses() {
   }
 }
 
+// Charge et affiche les témoignages publiés (gérés depuis le back-office admin).
+async function loadTestimonials() {
+  const grid = document.getElementById('testimonials-grid');
+  if (!grid) return;
+  try {
+    const testimonials = await apiFetch('/testimonials', { auth: false });
+    if (!testimonials.length) {
+      grid.innerHTML = '';
+      document.getElementById('temoignages')?.classList.add('hidden');
+      return;
+    }
+
+    grid.innerHTML = testimonials
+      .map(
+        (t) => `
+      <div class="bg-slate-800 rounded-xl p-6 text-slate-200">
+        <p class="text-sm leading-relaxed">"${t.text}"</p>
+        <p class="mt-4 font-semibold text-white">— ${t.name}${t.role ? `, ${t.role}` : ''}</p>
+      </div>`
+      )
+      .join('');
+  } catch (err) {
+    document.getElementById('temoignages')?.classList.add('hidden');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', loadCourses);
+document.addEventListener('DOMContentLoaded', loadTestimonials);

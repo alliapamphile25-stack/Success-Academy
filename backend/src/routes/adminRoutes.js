@@ -8,6 +8,12 @@ const {
   getAllCommissions,
   markCommissionPaid,
 } = require('../controllers/adminController');
+const {
+  getAllTestimonials,
+  createTestimonial,
+  updateTestimonial,
+  deleteTestimonial,
+} = require('../controllers/testimonialController');
 const { protect } = require('../middleware/auth');
 const { authorize } = require('../middleware/roles');
 
@@ -22,5 +28,10 @@ router.get('/sales', getSales);
 router.get('/courses', getAllCoursesAdmin);
 router.get('/commissions', getAllCommissions);
 router.put('/commissions/:id/pay', markCommissionPaid);
+
+router.get('/testimonials', getAllTestimonials);
+router.post('/testimonials', createTestimonial);
+router.put('/testimonials/:id', updateTestimonial);
+router.delete('/testimonials/:id', deleteTestimonial);
 
 module.exports = router;

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Témoignages — Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<div class="flex min-h-screen">
+  <aside class="w-64 bg-slate-900 text-slate-300 hidden lg:flex flex-col">
+    <div class="h-16 flex items-center px-6 font-bold text-white text-lg">
+      <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-green-500 flex items-center justify-center text-sm mr-2">LP</span>
+      Admin
+    </div>
+    <nav class="flex-1 px-3 space-y-1 text-sm">
+      <a href="index.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white">📊 Tableau de bord</a>
+      <a href="courses.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white">📚 Formations</a>
+      <a href="live.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white">🎥 Sessions live</a>
+      <a href="testimonials.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-800 text-white font-medium">💬 Témoignages</a>
+    </nav>
+    <div class="p-3 border-t border-slate-800">
+      <a href="../dashboard.html" class="block px-3 py-2 text-sm hover:text-white">← Retour au site</a>
+      <a href="#" id="nav-logout" class="block px-3 py-2 text-sm text-red-400 hover:text-red-300">Déconnexion</a>
+    </div>
+  </aside>
+
+  <main class="flex-1 p-6 lg:p-10">
+    <div class="flex items-center justify-between flex-wrap gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-slate-900">Témoignages</h1>
+        <p class="text-slate-500 mt-1">Gérez les témoignages affichés sur la page d'accueil.</p>
+      </div>
+      <button id="btn-new-testimonial" class="bg-blue-600 text-white font-semibold px-4 py-2.5 rounded-lg hover:bg-blue-700 transition text-sm">+ Nouveau témoignage</button>
+    </div>
+
+    <div id="testimonials-admin-list" class="mt-8 space-y-3">
+      <p class="text-slate-400">Chargement...</p>
+    </div>
+  </main>
+</div>
+
+<!-- Modale : créer/modifier un témoignage -->
+<div id="modal-testimonial" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-xl max-w-md w-full p-6">
+    <h2 id="modal-testimonial-title" class="font-bold text-lg text-slate-900 mb-4">Nouveau témoignage</h2>
+    <form id="testimonial-form" class="space-y-3">
+      <input type="hidden" name="id">
+      <input name="name" required placeholder="Nom (ex: Awa K.)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <input name="role" placeholder="Rôle / fonction (optionnel, ex: Développeuse web)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+      <textarea name="text" required placeholder="Texte du témoignage" rows="4" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"></textarea>
+      <label class="flex items-center gap-2 text-sm text-slate-600"><input type="checkbox" name="isPublished" checked> Publié sur la page d'accueil</label>
+      <div class="flex gap-3 pt-2">
+        <button type="button" id="btn-cancel-testimonial" class="flex-1 border border-slate-300 rounded-lg py-2.5 text-sm font-semibold">Annuler</button>
+        <button class="flex-1 bg-blue-600 text-white rounded-lg py-2.5 text-sm font-semibold hover:bg-blue-700">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/admin-testimonials.js"></script>
+</body>
+</html>
