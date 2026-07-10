@@ -5,7 +5,7 @@ const { asyncHandler } = require('../middleware/errorHandler');
 
 // @route POST /api/auth/register
 const register = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, referralCode } = req.body;
 
   if (!name || !email || !password) {
     return res.status(400).json({ message: 'Nom, email et mot de passe sont requis' });
@@ -19,7 +19,15 @@ const register = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: 'Un compte existe déjà avec cet email' });
   }
 
-  const user = await User.create({ name, email, password });
+  // Si un code de parrainage valide est fourni, on retient qui a parrainé ce nouvel utilisateur
+  // (utilisé plus tard pour calculer les commissions d'affiliation sur ses achats).
+  let referredBy = null;
+  if (referralCode) {
+    const referrer = await User.findOne({ referralCode });
+    if (referrer) referredBy = referrer._id;
+  }
+
+  const user = await User.create({ name, email, password, referredBy });
 
   sendEmail({
     to: user.email,

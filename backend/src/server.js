@@ -23,6 +23,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const certificateRoutes = require('./routes/certificateRoutes');
 const commentRoutes = require('./routes/commentRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
+const affiliateRoutes = require('./routes/affiliateRoutes');
 
 connectDB();
 
@@ -63,6 +64,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/certificates', certificateRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/affiliate', affiliateRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

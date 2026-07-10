@@ -16,12 +16,15 @@ function redirectAfterLogin() {
   }
 }
 
-// Préserve le paramètre ?course=ID quand on bascule entre les liens inscription/connexion.
+// Préserve les paramètres ?course=ID et ?ref=CODE quand on bascule entre inscription/connexion.
 function preserveCourseParamInLinks() {
-  const courseId = new URLSearchParams(window.location.search).get('course');
-  if (!courseId) return;
+  const params = new URLSearchParams(window.location.search);
+  const extra = [];
+  if (params.get('course')) extra.push(`course=${params.get('course')}`);
+  if (params.get('ref')) extra.push(`ref=${params.get('ref')}`);
+  if (!extra.length) return;
   document.querySelectorAll('a[href="login.html"], a[href="register.html"]').forEach((link) => {
-    link.href = `${link.getAttribute('href')}?course=${courseId}`;
+    link.href = `${link.getAttribute('href')}?${extra.join('&')}`;
   });
 }
 document.addEventListener('DOMContentLoaded', preserveCourseParamInLinks);
@@ -37,6 +40,7 @@ document.getElementById('register-form')?.addEventListener('submit', async (e) =
     name: form.name.value.trim(),
     email: form.email.value.trim(),
     password: form.password.value,
+    referralCode: new URLSearchParams(window.location.search).get('ref') || undefined,
   };
 
   submitBtn.disabled = true;

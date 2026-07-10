@@ -3,9 +3,14 @@ const Course = require('../models/Course');
 const Payment = require('../models/Payment');
 const Enrollment = require('../models/Enrollment');
 const Notification = require('../models/Notification');
+const User = require('../models/User');
+const Commission = require('../models/Commission');
 const { asyncHandler } = require('../middleware/errorHandler');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+// Taux de commission d'affiliation, configurable via l'environnement (20% par défaut).
+const AFFILIATE_COMMISSION_RATE = Number(process.env.AFFILIATE_COMMISSION_RATE) || 0.2;
 
 // @route POST /api/payments/checkout - crée une session Stripe Checkout pour une formation payante.
 // Architecture volontairement découplée : createEnrollmentAfterPayment() est appelée depuis
@@ -58,7 +63,7 @@ async function createEnrollmentAfterPayment({ userId, courseId, payment }) {
   if (existing) return existing;
 
   const enrollment = await Enrollment.create({ user: userId, course: courseId });
-  await Course.findByIdAndUpdate(courseId, { $inc: { studentsCount: 1 } });
+  const course = await Course.findByIdAndUpdate(courseId, { $inc: { studentsCount: 1 } });
 
   if (payment) {
     payment.status = 'paid';
@@ -71,6 +76,29 @@ async function createEnrollmentAfterPayment({ userId, courseId, payment }) {
     message: 'Votre inscription à la formation est confirmée. Bon apprentissage !',
     link: `/course.html?id=${courseId}`,
   });
+
+  // Programme d'affiliation : si cet acheteur a été parrainé, on crédite une commission
+  // à son parrain sur cette vente.
+  if (payment) {
+    const buyer = await User.findById(userId).select('referredBy');
+    if (buyer?.referredBy) {
+      const amount = Math.round(payment.amount * AFFILIATE_COMMISSION_RATE * 100) / 100;
+      await Commission.create({
+        affiliate: buyer.referredBy,
+        referredUser: userId,
+        course: courseId,
+        payment: payment._id,
+        amount,
+        rate: AFFILIATE_COMMISSION_RATE,
+      });
+      await Notification.create({
+        user: buyer.referredBy,
+        title: 'Nouvelle commission d\'affiliation 💰',
+        message: `Vous avez gagné ${amount} ${payment.currency} grâce à un filleul qui vient d'acheter "${course.title}".`,
+        link: '/affiliate.html',
+      });
+    }
+  }
 
   return enrollment;
 }

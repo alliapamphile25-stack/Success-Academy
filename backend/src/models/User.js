@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema(
   {
@@ -9,6 +10,10 @@ const userSchema = new mongoose.Schema(
     role: { type: String, enum: ['student', 'instructor', 'admin'], default: 'student' },
     avatar: { type: String, default: '' },
     isActive: { type: Boolean, default: true },
+    // Programme d'affiliation : chaque utilisateur a un code unique à partager,
+    // et on retient qui l'a parrainé (le cas échéant) pour calculer les commissions.
+    referralCode: { type: String, unique: true },
+    referredBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   },
   { timestamps: true }
 );
@@ -18,6 +23,13 @@ userSchema.pre('save', async function hashPassword(next) {
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+// Génère un code de parrainage unique à la création du compte.
+userSchema.pre('save', function generateReferralCode(next) {
+  if (!this.isNew || this.referralCode) return next();
+  this.referralCode = crypto.randomBytes(4).toString('hex');
   next();
 });
 

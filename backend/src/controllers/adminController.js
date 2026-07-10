@@ -2,6 +2,7 @@ const User = require('../models/User');
 const Course = require('../models/Course');
 const Payment = require('../models/Payment');
 const Enrollment = require('../models/Enrollment');
+const Commission = require('../models/Commission');
 const { asyncHandler } = require('../middleware/errorHandler');
 
 // @route GET /api/admin/stats - chiffres clés pour le tableau de bord admin
@@ -54,4 +55,21 @@ const getAllCoursesAdmin = asyncHandler(async (req, res) => {
   res.json(courses);
 });
 
-module.exports = { getStats, getUsers, updateUser, getSales, getAllCoursesAdmin };
+// @route GET /api/admin/commissions - toutes les commissions d'affiliation
+const getAllCommissions = asyncHandler(async (req, res) => {
+  const commissions = await Commission.find()
+    .populate('affiliate', 'name email')
+    .populate('referredUser', 'name')
+    .populate('course', 'title')
+    .sort({ createdAt: -1 });
+  res.json(commissions);
+});
+
+// @route PUT /api/admin/commissions/:id/pay - marque une commission comme payée
+const markCommissionPaid = asyncHandler(async (req, res) => {
+  const commission = await Commission.findByIdAndUpdate(req.params.id, { status: 'paid' }, { new: true });
+  if (!commission) return res.status(404).json({ message: 'Commission introuvable' });
+  res.json(commission);
+});
+
+module.exports = { getStats, getUsers, updateUser, getSales, getAllCoursesAdmin, getAllCommissions, markCommissionPaid };

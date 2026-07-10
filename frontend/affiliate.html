@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programme d'affiliation — LMS Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<header class="bg-white/90 backdrop-blur sticky top-0 z-40 border-b border-slate-100">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2 font-bold text-xl text-blue-600">
+      <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-green-500 flex items-center justify-center text-white text-sm">LP</span>
+      LMS Platform
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+      <a href="dashboard.html">Mon espace</a>
+      <a href="affiliate.html" class="text-blue-600">Affiliation</a>
+      <a href="index.html#formations">Catalogue</a>
+    </div>
+    <div id="nav-user" class="hidden md:flex items-center gap-4">
+      <span class="text-sm text-slate-500">Bonjour, <span id="nav-user-name" class="font-semibold text-slate-800"></span></span>
+      <a href="#" id="nav-logout" class="text-sm font-semibold text-red-600 hover:text-red-700">Déconnexion</a>
+    </div>
+    <div id="nav-guest" class="hidden"></div>
+  </nav>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <div class="bg-gradient-to-r from-blue-600 to-green-500 rounded-2xl p-8 text-white">
+    <h1 class="text-2xl sm:text-3xl font-bold">💰 Programme d'affiliation</h1>
+    <p class="mt-2 text-blue-50 max-w-2xl">Partagez votre lien personnel. Chaque fois qu'une personne s'inscrit grâce à vous et achète une formation, vous touchez une commission — automatiquement.</p>
+  </div>
+
+  <!-- Lien de parrainage -->
+  <div class="bg-white rounded-xl border border-slate-100 p-6 mt-8">
+    <h2 class="font-semibold text-slate-900 mb-3">Votre lien de parrainage</h2>
+    <div class="flex flex-col sm:flex-row gap-3">
+      <input id="referral-link" type="text" readonly class="flex-1 border border-slate-300 rounded-lg px-4 py-2.5 text-sm bg-slate-50 text-slate-600">
+      <button id="btn-copy-link" class="bg-blue-600 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-700 transition text-sm whitespace-nowrap">Copier le lien</button>
+    </div>
+    <p class="text-xs text-slate-400 mt-2">Partagez ce lien sur les réseaux sociaux, par email, ou avec vos proches. Toute personne qui s'inscrit via ce lien devient votre filleul.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid sm:grid-cols-3 gap-4 mt-6">
+    <div class="bg-white rounded-xl border border-slate-100 p-5">
+      <p class="text-sm text-slate-500">Filleuls inscrits</p>
+      <p id="stat-referred" class="text-3xl font-bold text-slate-900 mt-1">0</p>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-100 p-5">
+      <p class="text-sm text-slate-500">Commissions en attente</p>
+      <p id="stat-pending" class="text-3xl font-bold text-amber-600 mt-1">0 €</p>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-100 p-5">
+      <p class="text-sm text-slate-500">Commissions payées</p>
+      <p id="stat-paid" class="text-3xl font-bold text-green-600 mt-1">0 €</p>
+    </div>
+  </div>
+
+  <!-- Historique des commissions -->
+  <h2 class="text-xl font-bold text-slate-900 mt-10 mb-4">Historique des commissions</h2>
+  <div id="commissions-list" class="space-y-3">
+    <p class="text-slate-400">Chargement...</p>
+  </div>
+</main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/affiliate.js"></script>
+</body>
+</html>

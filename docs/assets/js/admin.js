@@ -57,6 +57,43 @@ async function loadAdminDashboard() {
   } catch (err) {
     /* silencieux */
   }
+
+  try {
+    const commissions = await apiFetch('/admin/commissions');
+    document.getElementById('commissions-table').innerHTML = commissions.length
+      ? commissions
+          .slice(0, 10)
+          .map(
+            (c) => `
+      <div class="flex items-center justify-between py-2.5">
+        <div>
+          <p class="font-medium text-slate-900">${c.affiliate?.name || 'Utilisateur'} <span class="text-xs text-slate-400 font-normal">→ ${c.referredUser?.name || ''}</span></p>
+          <p class="text-xs text-slate-500">${c.course?.title || 'Formation supprimée'}</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-semibold text-slate-900">${c.amount} €</span>
+          <span class="text-xs font-semibold px-2 py-1 rounded-full ${c.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">${c.status === 'paid' ? 'Payée' : 'En attente'}</span>
+          ${c.status === 'pending' ? `<button class="btn-pay-commission text-xs font-semibold text-blue-600 hover:underline" data-id="${c._id}">Marquer payée</button>` : ''}
+        </div>
+      </div>`
+          )
+          .join('')
+      : '<p class="text-sm text-slate-400 py-4">Aucune commission d\'affiliation pour le moment.</p>';
+
+    document.querySelectorAll('.btn-pay-commission').forEach((btn) =>
+      btn.addEventListener('click', async () => {
+        try {
+          await apiFetch(`/admin/commissions/${btn.dataset.id}/pay`, { method: 'PUT' });
+          showToast('Commission marquée comme payée', 'success');
+          loadAdminDashboard();
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      })
+    );
+  } catch (err) {
+    /* silencieux */
+  }
 }
 
 document.addEventListener('DOMContentLoaded', loadAdminDashboard);
