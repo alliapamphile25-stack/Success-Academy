@@ -1,10 +1,14 @@
 // Charge et affiche les formations publiées sur la page d'accueil.
+// Masque toute la section tant qu'aucune formation n'est publiée, pour éviter
+// un bloc vide sur l'accueil (elle réapparaît automatiquement dès qu'une
+// formation est créée depuis le back-office admin).
 async function loadCourses() {
   const grid = document.getElementById('courses-grid');
   try {
     const courses = await apiFetch('/courses', { auth: false });
     if (!courses.length) {
-      grid.innerHTML = '<p class="text-slate-400 col-span-3 text-center py-10">Aucune formation disponible pour le moment.</p>';
+      grid.innerHTML = '';
+      document.getElementById('formations')?.classList.add('hidden');
       return;
     }
 
