@@ -7,10 +7,14 @@ async function initNavbar() {
   const userNameEl = document.getElementById('nav-user-name');
   const logoutBtn = document.getElementById('nav-logout');
 
+  // On force l'affichage via style.display plutôt que la classe Tailwind "hidden" :
+  // ces éléments portent aussi "md:flex" en dur dans le HTML, qui l'emporterait
+  // sinon sur "hidden" à partir du breakpoint md et ferait apparaître les deux
+  // blocs (invité + connecté) en même temps sur desktop.
   if (isLoggedIn()) {
     const user = getCurrentUser();
-    if (guestLinks) guestLinks.classList.add('hidden');
-    if (userLinks) userLinks.classList.remove('hidden');
+    if (guestLinks) guestLinks.style.display = 'none';
+    if (userLinks) userLinks.style.display = '';
     if (userNameEl) userNameEl.textContent = user?.name || '';
     if (adminLink) adminLink.classList.toggle('hidden', !['admin', 'instructor'].includes(user?.role));
 
@@ -21,8 +25,8 @@ async function initNavbar() {
 
     loadNotificationBadge();
   } else {
-    if (guestLinks) guestLinks.classList.remove('hidden');
-    if (userLinks) userLinks.classList.add('hidden');
+    if (guestLinks) guestLinks.style.display = '';
+    if (userLinks) userLinks.style.display = 'none';
   }
 
   document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
