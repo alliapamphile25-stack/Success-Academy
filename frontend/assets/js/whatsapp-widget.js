@@ -3,7 +3,7 @@
 (function injectWhatsappButton() {
   if (typeof CONFIG === 'undefined' || !CONFIG.WHATSAPP_NUMBER) return;
 
-  const message = encodeURIComponent("Bonjour, j'ai une question sur Elite Tranaing.");
+  const message = encodeURIComponent("Bonjour, j'ai une question sur vos formations ETS.");
   const link = document.createElement('a');
   link.href = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${message}`;
   link.target = '_blank';

@@ -31,7 +31,7 @@ const register = asyncHandler(async (req, res) => {
 
   sendEmail({
     to: user.email,
-    subject: 'Bienvenue sur Elite Tranaing',
+    subject: 'Bienvenue chez ELTE Training et Services (ETS)',
     html: `<p>Bonjour ${user.name}, bienvenue sur notre plateforme de formation !</p>`,
   }).catch((err) => console.error('Erreur envoi email:', err.message));
 

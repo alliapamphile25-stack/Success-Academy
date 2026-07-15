@@ -32,7 +32,7 @@ services:
       - key: SMTP_PASS
         sync: false
       - key: EMAIL_FROM
-        value: "Elite Tranaing <no-reply@successacademy.com>"
+        value: "ELTE Training et Services (ETS) <no-reply@successacademy.com>"
       - key: ADMIN_EMAIL
         value: admin@lmsplatform.com
       - key: ADMIN_PASSWORD
