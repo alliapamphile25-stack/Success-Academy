@@ -1,4 +1,4 @@
-# LMS Platform — Plateforme de formation en ligne
+# Elite Tranaing — Plateforme de formation en ligne
 
 Plateforme e-learning complète : inscription/connexion, catalogue de formations, lecteur de cours (vidéo/PDF/quiz), suivi de progression, certificats, paiement Stripe, sessions live avec chat temps réel, et back-office admin.
 
